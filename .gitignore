@@ -1,0 +1,5 @@
+.vscode/
+api/.__py_cache__/**
+api/**/__pycache__/
+api/.venv/
+api/cache/
