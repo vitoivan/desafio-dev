@@ -2,10 +2,13 @@ from src.controllers.transaction_controller import TransactionController
 from os import path
 
 # absolute path of this file
+
+
 here = path.dirname(__file__)
 
+def get_file(filename):
+    return open(path.join(here, f'files/{filename}'), 'rb')
 
-correct = open(path.join(here, 'files/CNAB.txt'), 'r')
 
 def test_when_transaction_post_is_empty(client):
     
@@ -21,7 +24,7 @@ def test_when_transaction_post_is_empty(client):
 
 def test_when_the_type_of_file_is_not_txt(client):
 
-    wrong = open(path.join(here, 'files/incorrect'), 'rb')
+    wrong = get_file('incorrect')
     """ If the request was did with a file that is not a .txt,
         then return an error
     """
@@ -38,10 +41,10 @@ def test_when_file_is_not_an_CNAB_file(client):
         but is a .txt, needs to return an error
     """
 
-    invalidCNAB = open(path.join(here, 'files/invalid_CNAB.txt'), 'rb')
+    invalid_cnab = get_file('invalid_CNAB.txt')
     resp = client.post('/transaction',
         headers={'Content-Type': 'multipart/form-data'},
-        data={'file': invalidCNAB }
+        data={'file': invalid_cnab }
     )
     assert resp.status_code == 400
     assert resp.json == {'msg': 'Your file is not a valid CNAB file'}
