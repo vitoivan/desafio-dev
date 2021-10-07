@@ -53,6 +53,7 @@ class TransactionController:
             binary_file, object_file = cls.get_file_data(file)
             cls.check_file(binary_file, object_file)
             rows = cls.split_file_to_rows(binary_file)
+            return TransactionModel.register(rows)
 
         except (InvalidFileType, InvalidCNABFile) as e:
             return e.msg, e.status
