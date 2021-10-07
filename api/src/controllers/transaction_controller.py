@@ -39,9 +39,9 @@ class TransactionController:
         if object_file.content_type != 'text/plain':
             raise InvalidFileType()
 
-        rows = TransactionController.split_file(binary_file)
+        rows = cls.split_file(binary_file)
         for row in rows:
-            TransactionController.check_line(row)
+            cls.check_line(row)
              
     
     @staticmethod
