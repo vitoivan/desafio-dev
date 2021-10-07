@@ -53,6 +53,9 @@ def test_when_file_is_not_an_CNAB_file(client):
 
 
 def test_check_line_valid_cases():
+
+    """ Expect no return and no errors if the string passed match with CNAB pattern"""
+
     line1 = '3201903010000014200096206760174753****3153153453JOÃO MACEDO   BAR DO JOÃO       '
     line2 = '5201903010000013200556418150633123****7687145607MARIA JOSEFINALOJA DO Ó - MATRIZ'
     line3 = '3201903010000012200845152540736777****1313172712MARCOS PEREIRAMERCADO DA AVENIDA'
@@ -77,6 +80,9 @@ def test_check_line_valid_cases():
 
 
 def test_check_line_invalid_cases():
+
+    """ Expect an error if the line does not match with the CNAB pattern """
+
     line1 = '301903010000014200096206760174753****3153153453JOÃO MACEDO   BAR DO JOÃO       '
     line2 = '5201903010000013200556418150633123***7687145607MARIA JOSEFINALOJA DO Ó - MATRIZ'
     line3 = '3201903010000012200845152540736777****1313172712MARCOS PEREIRAMERCAD DA AVENIDA'
@@ -99,3 +105,17 @@ def test_check_line_invalid_cases():
         TransactionController.check_line(line8)
         TransactionController.check_line(line9)
         TransactionController.check_line(line10)
+
+
+def test_when_send_a_valid_cnab_file(client):
+
+    """ If everything is ok, then insert the data in database and return it """
+
+    correct_cnab = get_file('CNAB.txt')
+
+    resp = client.post('/transaction',
+        headers={'Content-Type': 'multipart/form-data'},
+        data={'file': correct_cnab }
+    )
+
+    assert resp.status_code == 201
