@@ -14,7 +14,7 @@ class TransactionModel:
         6: 'Vendas',
         7: 'Recebimento TED',
         8: 'Recebimento DOC',
-        9: 'Alugel'
+        9: 'Aluguel'
     }
 
     @staticmethod
@@ -33,14 +33,15 @@ class TransactionModel:
     @classmethod
     def register(cls, rows: list[str]):
         
-        db = Database()
-
+        output = []
         for row in rows:
             data = cls.normalize_row(row)
             cls.register_owner(str(data['owner_name']))
             cls.register_shop(str(data['shop_name']))
-            
-        return 'ok'
+            output.append(cls.register_transaction(data))
+        
+        print(output)
+        return output
     
     @staticmethod
     def register_owner(owner_name):
@@ -75,33 +76,92 @@ class TransactionModel:
             db.close()
 
         
-    def get_owner(id = None):
+    def get_owner(name = None):
         
         db = Database()
-        if id == None:
+        if name == None:
             query = sql.SQL("""SELECT * FROM donos;""")
            
         else:
             query = sql.SQL("""
-                SELECT * FROM donos WHERE id = {id};
-            """).format(id=sql.Literal(id))
+                SELECT * FROM donos WHERE nome = {name};
+            """).format(name=sql.Literal(name))
         
         db.cur.execute(query)
         data = db.cur.fetchall()
+        db.close()
+        return data
+
+    def get_shop(name = None):
+        
+        db = Database()
+        if name == None:
+            query = sql.SQL("""SELECT * FROM lojas;""")
+           
+        else:
+            query = sql.SQL("""
+                SELECT * FROM lojas WHERE nome = {name};
+            """).format(name=sql.Literal(name))
+        
+        db.cur.execute(query)
+        data = db.cur.fetchall()
+        db.close()
         return data
 
 
     def get_type(type_name = None):
-    
+        
         db = Database()
         if type_name == None:
             query = sql.SQL("""SELECT * FROM tipos;""")
-           
+            db.cur.execute(query)
+            data = db.cur.fetchall()
+        
         else:
             query = sql.SQL("""
                 SELECT * FROM tipos WHERE nome = {type_name};
             """).format(type_name=sql.Literal(type_name))
-        
+            db.cur.execute(query)
+            data = db.cur.fetchone()
+ 
+        db.close()
+        return data
+
+    @classmethod
+    def register_transaction(cls, data):
+    
+        db = Database()
+
+        type_id = cls.get_type(data['type'])[0]
+        owner_id = cls.get_owner(data['owner_name'])[0][0]
+        shop_id = cls.get_shop(data['shop_name'])[0][0]
+        query = sql.SQL("""
+            INSERT INTO transacoes 
+            (tipo_id, data, valor, cpf, cartao, hora, id_dono, id_loja)
+            VALUES
+                (
+                    {type},
+                    {date},
+                    {value},
+                    {cpf},
+                    {card},
+                    {hour},
+                    {id_dono},
+                    {id_shop}
+                ) 
+            RETURNING *;
+        """).format(
+            type=sql.Literal(type_id),
+            date=sql.Literal(data['date']),
+            value=sql.Literal(data['value']),
+            cpf=sql.Literal(data['cpf']),
+            card=sql.Literal(data['card']),
+            hour=sql.Literal(data['time']),
+            id_dono=sql.Literal(owner_id),
+            id_shop=sql.Literal(shop_id),
+        )
         db.cur.execute(query)
+        db.conn.commit()
         data = db.cur.fetchall()
+        db.close()
         return data
