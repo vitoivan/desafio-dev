@@ -11,9 +11,27 @@ CREATE TABLE IF NOT EXISTS lojas(
     nome VARCHAR(19) UNIQUE NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS tipos(
+    id BIGSERIAL PRIMARY KEY,
+    nome VARCHAR(22) NOT NULL
+);
+
+INSERT INTO tipos
+    (nome)
+VALUES
+    ('Débito'),
+    ('Boleto'),
+    ('Financiamento'),
+    ('Crédito'),
+    ('Recebimento Empréstimo'),
+    ('Vendas'),
+    ('Recebimento TED'),
+    ('Recebimento DOC'),
+    ('Aluguel');
+
 CREATE TABLE IF NOT EXISTS transacoes(
     id SERIAL PRIMARY KEY,
-    tipo VARCHAR(22) NOT NULL,
+    tipo_id INTEGER NOT NULL REFERENCES tipos(id),
     data DATE NOT NULL,
     valor FLOAT NOT NULL,
     cpf VARCHAR(11) NOT NULL,
