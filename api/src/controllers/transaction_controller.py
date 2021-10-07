@@ -23,17 +23,23 @@ class TransactionController:
         return rows
 
     @staticmethod
-    def check_file(file):
-    
-        for f, v in file.items():
-            uploaded_file = v
-            if v.content_type != 'text/plain':
-                raise InvalidFileType()
+    def get_file_data(file):
 
-        file = uploaded_file.read()
-        uploaded_file.seek(0)
-        
-        rows = TransactionController.split_file(file)
+        for key, value in file.items():
+            binary = value.read()
+            value.seek(0)
+            return [binary, value]
+
+
+    @classmethod
+    def check_file(cls, file):
+     
+        binary_file, object_file = cls.get_file_data(file)
+
+        if object_file.content_type != 'text/plain':
+            raise InvalidFileType()
+
+        rows = TransactionController.split_file(binary_file)
         for row in rows:
             TransactionController.check_line(row)
              
