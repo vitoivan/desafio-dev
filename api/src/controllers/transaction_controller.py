@@ -7,7 +7,7 @@ class TransactionController:
 
     @staticmethod
     def check_line(row: str):
-        reg = r"(\d{34})(\*{4})(\d{10})(.{32,34})"
+        reg = r"([1-9])(\d{33})(\*{4})(\d{10})(.{32,34})"
         if re.fullmatch(reg, row) == None:
             raise InvalidCNABFile()
     
