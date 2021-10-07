@@ -9,7 +9,18 @@ class TransactionController:
         reg = r"(\d{34})(\*{4})(\d{10})(.{32,34})"
         if re.fullmatch(reg, row) == None:
             raise InvalidCNABFile()
-        
+    
+    @staticmethod
+    def split_file(file):
+        rows = []
+        line = ''
+        for letter in file:
+            if chr(letter) != '\n':
+                line += chr(letter)
+            else:
+                rows.append(line)
+                line = ''
+        return rows
 
     @staticmethod
     def check_file(file):
@@ -21,13 +32,11 @@ class TransactionController:
 
         file = uploaded_file.read()
         uploaded_file.seek(0)
-        line = ''
-        for letter in file:
-            if chr(letter) != '\n':
-                line += chr(letter)
-            else:
-                TransactionController.check_line(line)
-                line = ''
+        
+        rows = TransactionController.split_file(file)
+        for row in rows:
+            TransactionController.check_line(row)
+             
     
     @staticmethod
     def post():
