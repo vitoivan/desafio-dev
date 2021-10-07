@@ -11,7 +11,7 @@ class TransactionController:
             raise InvalidCNABFile()
     
     @staticmethod
-    def split_file(file):
+    def split_file_to_rows(file):
         rows = []
         line = ''
         for letter in file:
@@ -32,26 +32,25 @@ class TransactionController:
 
 
     @classmethod
-    def check_file(cls, file):
-     
-        binary_file, object_file = cls.get_file_data(file)
+    def check_file(cls, binary_file, object_file):
 
         if object_file.content_type != 'text/plain':
             raise InvalidFileType()
 
-        rows = cls.split_file(binary_file)
+        rows = cls.split_file_to_rows(binary_file)
         for row in rows:
             cls.check_line(row)
              
     
-    @staticmethod
-    def post():
+    @classmethod
+    def post(cls):
         
         file = request.files
         if len(file) == 0:
             return {'msg': 'You need to upload a file'}, 400
         try:
-            TransactionController.check_file(file)
+            binary_file, object_file = cls.get_file_data(file)
+            cls.check_file(binary_file, object_file)
         except (InvalidFileType, InvalidCNABFile) as e:
             return e.msg, e.status
         
