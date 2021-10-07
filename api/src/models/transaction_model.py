@@ -37,7 +37,9 @@ class TransactionModel:
 
         for row in rows:
             data = cls.normalize_row(row)
-            cls.register_owner(app, data['owner_name'])
+            cls.register_owner(app, str(data['owner_name']))
+            cls.register_shop(app, str(data['shop_name']))
+
         return 'ok'
     
     @staticmethod
@@ -55,3 +57,21 @@ class TransactionModel:
             db.conn.commit()
         except psycopg2.errors.UniqueViolation as e:
             db.close()
+
+
+    def register_shop(app , shop_name):
+        
+        db = Database(app)
+        query = sql.SQL("""
+        INSERT INTO lojas
+            (nome)
+        VALUES
+            ({shop});
+        """).format(shop=sql.Literal(shop_name))
+        try:
+            db.cur.execute(query)
+            db.conn.commit()
+        except psycopg2.errors.UniqueViolation as e:
+            db.close()
+
+        
