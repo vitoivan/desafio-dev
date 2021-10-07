@@ -40,3 +40,15 @@ class TransactionModel:
             cls.register_owner(db, data['owner_name'])
         return 'ok'
     
+    @staticmethod
+    def register_owner(db, owner_name):
+
+        query = sql.SQL("""
+            INSERT INTO donos
+                (nome)
+            VALUES
+                ({owner});
+        """).format(owner=sql.Literal(owner_name))
+        db.cur.execute(query)
+        db.conn.commit()
+
