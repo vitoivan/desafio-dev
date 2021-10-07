@@ -38,5 +38,5 @@ CREATE TABLE IF NOT EXISTS transacoes(
     cartao VARCHAR(12) NOT NULL,
     hora TIME NOT NULL,
     id_dono INTEGER NOT NULL REFERENCES donos(id),
-    id_loja INTEGER NOT NULL UNIQUE REFERENCES lojas(id)
+    id_loja INTEGER NOT NULL REFERENCES lojas(id)
 );
