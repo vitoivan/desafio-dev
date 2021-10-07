@@ -39,7 +39,7 @@ class TransactionModel:
             data = cls.normalize_row(row)
             cls.register_owner(app, str(data['owner_name']))
             cls.register_shop(app, str(data['shop_name']))
-
+            
         return 'ok'
     
     @staticmethod
@@ -76,7 +76,7 @@ class TransactionModel:
 
         
     def get_owner(app, id = None):
-
+        
         db = Database(app)
         if id == None:
             query = sql.SQL("""SELECT * FROM donos;""")
@@ -85,6 +85,22 @@ class TransactionModel:
             query = sql.SQL("""
                 SELECT * FROM donos WHERE id = {id};
             """).format(id=sql.Literal(id))
+        
+        db.cur.execute(query)
+        data = db.cur.fetchall()
+        return data
+
+
+    def get_type(app, type_name = None):
+    
+        db = Database(app)
+        if type_name == None:
+            query = sql.SQL("""SELECT * FROM tipos;""")
+           
+        else:
+            query = sql.SQL("""
+                SELECT * FROM tipos WHERE nome = {type_name};
+            """).format(type_name=sql.Literal(type_name))
         
         db.cur.execute(query)
         data = db.cur.fetchall()
