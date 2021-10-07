@@ -11,17 +11,17 @@ class TransactionController:
         for f, v in file.items():
             if v.content_type != 'text/plain':
                 raise InvalidFileType()
-                return {'msg': 'Your file needs to be a .txt'}, 400
 
     @staticmethod
-    def post(file = None):
+    def post():
         
-        if file == None:
-            file = request.files
+        file = request.files
+        if len(file) == 0:
+            return {'msg': 'You need to upload a file'}, 400
         try:
             TransactionController.check_file(file)
         except InvalidFileType as e:
             return e.msg, e.status
         
     
-        return {'msg': 'You need to upload a file'}, 400
+        return 'ok'
