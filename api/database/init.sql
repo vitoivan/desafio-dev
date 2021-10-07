@@ -1,4 +1,4 @@
-CREATE DATABASE bycoders;
+CREATE DATABASE bycoders WITH ENCODING 'UTF8';
 \c bycoders;
 
 CREATE TABLE IF NOT EXISTS donos(

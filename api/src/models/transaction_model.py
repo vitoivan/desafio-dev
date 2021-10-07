@@ -75,3 +75,17 @@ class TransactionModel:
             db.close()
 
         
+    def get_owner(app, id = None):
+
+        db = Database(app)
+        if id == None:
+            query = sql.SQL("""SELECT * FROM donos;""")
+           
+        else:
+            query = sql.SQL("""
+                SELECT * FROM donos WHERE id = {id};
+            """).format(id=sql.Literal(id))
+        
+        db.cur.execute(query)
+        data = db.cur.fetchall()
+        return data

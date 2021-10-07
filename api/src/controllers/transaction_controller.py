@@ -16,8 +16,8 @@ class TransactionController:
         rows = []
         line = ''
         for letter in file:
-            if chr(letter) != '\n':
-                line += chr(letter)
+            if letter != '\n':
+                line += letter
             else:
                 rows.append(line)
                 line = ''
@@ -28,6 +28,7 @@ class TransactionController:
 
         for key, value in file.items():
             binary = value.read()
+            binary = binary.decode()
             value.seek(0)
             return [binary, value]
 
