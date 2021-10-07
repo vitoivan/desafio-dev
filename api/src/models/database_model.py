@@ -12,7 +12,7 @@ class Database:
             host=host,
             database=name,
             user=user,
-            pwd=pwd
+            password=pwd
         )
         self.cur = self.conn.cursor()
 

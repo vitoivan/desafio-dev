@@ -1,7 +1,7 @@
 from datetime import datetime
-from psycopg2.errors import UniqueViolation
 from .database_model import Database
 from psycopg2 import sql
+import psycopg2
 
 class TransactionModel:
     
@@ -37,18 +37,21 @@ class TransactionModel:
 
         for row in rows:
             data = cls.normalize_row(row)
-            cls.register_owner(db, data['owner_name'])
+            cls.register_owner(app, data['owner_name'])
         return 'ok'
     
     @staticmethod
-    def register_owner(db, owner_name):
-
+    def register_owner(app , owner_name):
+        
+        db = Database(app)
         query = sql.SQL("""
-            INSERT INTO donos
-                (nome)
-            VALUES
-                ({owner});
+        INSERT INTO donos
+            (nome)
+        VALUES
+            ({owner});
         """).format(owner=sql.Literal(owner_name))
-        db.cur.execute(query)
-        db.conn.commit()
-
+        try:
+            db.cur.execute(query)
+            db.conn.commit()
+        except psycopg2.errors.UniqueViolation as e:
+            db.close()
