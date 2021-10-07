@@ -20,6 +20,7 @@ class TransactionController:
                 raise InvalidFileType()
 
         file = uploaded_file.read()
+        uploaded_file.seek(0)
         line = ''
         for letter in file:
             if chr(letter) != '\n':
