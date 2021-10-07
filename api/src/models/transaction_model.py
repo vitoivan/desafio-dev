@@ -31,21 +31,21 @@ class TransactionModel:
         }
 
     @classmethod
-    def register(cls, rows: list[str], app):
+    def register(cls, rows: list[str]):
         
-        db = Database(app)
+        db = Database()
 
         for row in rows:
             data = cls.normalize_row(row)
-            cls.register_owner(app, str(data['owner_name']))
-            cls.register_shop(app, str(data['shop_name']))
+            cls.register_owner(str(data['owner_name']))
+            cls.register_shop(str(data['shop_name']))
             
         return 'ok'
     
     @staticmethod
-    def register_owner(app , owner_name):
+    def register_owner(owner_name):
         
-        db = Database(app)
+        db = Database()
         query = sql.SQL("""
         INSERT INTO donos
             (nome)
@@ -59,9 +59,9 @@ class TransactionModel:
             db.close()
 
 
-    def register_shop(app , shop_name):
+    def register_shop(shop_name):
         
-        db = Database(app)
+        db = Database()
         query = sql.SQL("""
         INSERT INTO lojas
             (nome)
@@ -75,9 +75,9 @@ class TransactionModel:
             db.close()
 
         
-    def get_owner(app, id = None):
+    def get_owner(id = None):
         
-        db = Database(app)
+        db = Database()
         if id == None:
             query = sql.SQL("""SELECT * FROM donos;""")
            
@@ -91,9 +91,9 @@ class TransactionModel:
         return data
 
 
-    def get_type(app, type_name = None):
+    def get_type(type_name = None):
     
-        db = Database(app)
+        db = Database()
         if type_name == None:
             query = sql.SQL("""SELECT * FROM tipos;""")
            

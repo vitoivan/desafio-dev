@@ -1,12 +1,13 @@
 import psycopg2
+from src.configs.env import config
 
 class Database:
 
-    def __init__(self, app):
-        host = app.config['DB_HOST']
-        name = app.config['DB_NAME']
-        user = app.config['DB_USER']
-        pwd = app.config['DB_PWD']
+    def __init__(self):
+        host = config['DB_HOST']
+        name = config['DB_NAME']
+        user = config['DB_USER']
+        pwd =  config['DB_PWD']
 
         self.conn = psycopg2.connect(
             host=host,
