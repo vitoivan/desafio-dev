@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request, jsonify, current_app
 from src.models.errors import InvalidFileType, InvalidCNABFile
 from src.models.transaction_model import TransactionModel
 import re
@@ -53,7 +53,7 @@ class TransactionController:
             binary_file, object_file = cls.get_file_data(file)
             cls.check_file(binary_file, object_file)
             rows = cls.split_file_to_rows(binary_file)
-            return TransactionModel.register(rows)
+            return TransactionModel.register(rows, current_app)
 
         except (InvalidFileType, InvalidCNABFile) as e:
             return e.msg, e.status

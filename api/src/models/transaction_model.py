@@ -31,9 +31,9 @@ class TransactionModel:
         }
 
     @classmethod
-    def register(cls, rows: list[str]):
+    def register(cls, rows: list[str], app):
         
-        db = Database()
+        db = Database(app)
 
         for row in rows:
             data = cls.normalize_row(row)
