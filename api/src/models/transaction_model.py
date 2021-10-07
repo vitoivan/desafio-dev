@@ -56,6 +56,7 @@ class TransactionModel:
         try:
             db.cur.execute(query)
             db.conn.commit()
+            db.close()
         except psycopg2.errors.UniqueViolation as e:
             db.close()
 
@@ -72,6 +73,7 @@ class TransactionModel:
         try:
             db.cur.execute(query)
             db.conn.commit()
+            db.close()
         except psycopg2.errors.UniqueViolation as e:
             db.close()
 
