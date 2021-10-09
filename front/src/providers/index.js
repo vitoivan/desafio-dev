@@ -1,9 +1,12 @@
 import { UserProvider } from "./user";
+import { TransactionsProvider } from "./transactions";
 
 const Providers = ({ children }) => {
     return (
         <UserProvider>
-            {children}
+            <TransactionsProvider>
+                {children}
+            </TransactionsProvider>
         </UserProvider>
     );
 }

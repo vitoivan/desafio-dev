@@ -1,11 +1,12 @@
 import './css/app.css'
-import { useState, useEffect } from 'react'
 import Routes from './routes/routes'
+import { Toaster } from 'react-hot-toast'
 
 function App() {
   return (
     <div className="App">
       <Routes />
+      <Toaster />
     </div>
   );
 }

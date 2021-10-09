@@ -1,0 +1,59 @@
+.header-container {
+    width: 100%;
+    height: 6vh;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+}
+
+.header-container h1{
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.header-container img {
+    border-radius: 100%;
+    width: 60px;
+    height: 60px;
+    display: block;
+    cursor: pointer;
+    transition: transform .5s;
+}
+
+.header-container img:hover {
+    transform: scale(1.1);
+    transition: transform .5s;
+}
+
+.header-menu-img{
+    position: relative;
+    height: fit-content;
+    width: fit-content;
+}
+.header-container .menu{
+    position: absolute;
+    bottom: calc(-100% + 5px);
+    right: -1rem;
+    width: fit-content;
+    height: fit-content;
+    min-height: 50px;
+    background-color: transparent;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: .5s;
+}
+
+.header-container .menu li{
+    padding: .5rem 1rem;
+    list-style: none;
+    color: #fff;
+    border: 1px solid #fff;
+    cursor: pointer;
+}
+
+.header-container .menu.active{
+    transition: .5s;
+    transform: scaleY(1);
+    transform-origin: top;
+}

@@ -2,14 +2,20 @@ import GoogleLogin from "react-google-login";
 import './styles.css'
 import { useUser } from '../../providers/user';
 import Loading from '../Loading'
+import { useHistory } from "react-router";
+import toast from "react-hot-toast";
 
 const Login = () => {
 
     const { setUser, loading, setLoading } = useUser();
-
-    const responseGoogle = (resp) => {
-
+    const history = useHistory()
+    const success = (resp) => {
         setUser(resp)
+        setLoading(false)
+        history.push('/')
+    }
+    const error = (resp) => {
+        toast.error(resp.details)
         setLoading(false)
     }
 
@@ -25,11 +31,12 @@ const Login = () => {
                 (<GoogleLogin
                     clientId="870034952037-38mq1nvbdbckdfe30d9keg5r7jtd945f.apps.googleusercontent.com"
                     buttonText="Continuar com o Google"
-                    onSuccess={responseGoogle}
-                    onFailure={responseGoogle}
+                    onSuccess={success}
+                    onFailure={error}
                     onRequest={requested}
                 />)
             }
+            
             
         </div>
     );

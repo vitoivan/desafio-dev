@@ -1,0 +1,39 @@
+.transaction-container {
+    border-collapse: collapse;
+    margin: 1rem auto;
+    font-size: .9rem;
+    border-radius: 15px;
+}
+
+.transaction-container thead tr {
+    background-color: #26acd0;
+    margin: 1rem auto;
+    text-align: center;
+    color: #fff;
+    margin: 0 1rem;
+    padding: 1rem;
+}
+
+.transaction-container th,
+.transaction-container td {
+    padding: .5rem .8rem;
+}
+
+.transaction-container tbody tr {
+    background-color: #fff;
+    border-bottom: 1px solid #aaa;
+    color: #000;
+}
+
+.transaction-container tbody tr:nth-of-type(even) {
+    background-color: #ddd;
+}
+
+
+.sum {
+    margin: 1rem 0;
+}
+
+.sum span {
+    
+}
