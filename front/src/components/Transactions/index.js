@@ -28,11 +28,11 @@ const Transaction = () => {
         <p className='sum'>
             <span>Saldo em conta: <br /></span>
             {
-                parseReal(
+                transactions ? ( parseReal(
                     transactions?.reduce((acc, curr) => (
                         acc + get_number_with_signal(curr)
                     ), 0)
-                )
+                )) : ('R$ 0,00')
             }
         </p>
          <table className='transaction-container'>

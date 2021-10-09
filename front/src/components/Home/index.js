@@ -12,7 +12,7 @@ import Transactions from '../Transactions'
 const Home = () => {
 
     const [file, setFile] = useState(undefined)
-    const { user, loading, setLoading } = useUser();
+    const { user, loading, setLoading, setUser } = useUser();
     const { setTransactions, transactions } = useTransactions();
 
     const handleSubmit = (e) => {
@@ -46,7 +46,12 @@ const Home = () => {
             }
         )
     }
-  
+
+    const usr = localStorage.getItem('@bycoders-desafio-dev')
+    if(usr && !user)
+    {
+        setUser(JSON.parse(usr))
+    }
     if(!user?.profileObj){
         return <Redirect to='/login' />
     }
@@ -55,16 +60,16 @@ const Home = () => {
         <>
         <Header />
         <div className="home-container center">
-        <form onSubmit={handleSubmit} className='center'>
-            <label htmlFor="file" className='upload-area center'>
-                Selecionar arquivo
-            </label>
-            {
-                file && (<p className='file'>Arquivo: <span>{file.name}</span></p>)
-            }
-            <input id='file' type="file" onChange={e => setFile(e.target.files[0])} name="upload_file" />
-            { loading == true ? (<Loading />) : (<button type="submit">Enviar</button>)}
-        </form>
+            <form onSubmit={handleSubmit} className='center'>
+                <label htmlFor="file" className='upload-area center'>
+                    Selecionar arquivo
+                </label>
+                {
+                    file && (<p className='file'>Arquivo: <span>{file.name}</span></p>)
+                }
+                <input id='file' type="file" onChange={e => setFile(e.target.files[0])} name="upload_file" />
+                { loading == true ? (<Loading />) : (<button type="submit">Enviar</button>)}
+            </form>
             { transactions && (<Transactions />) }
         </div>
         </>

@@ -1,7 +1,7 @@
 import './styles.css'
 import { useUser } from '../../providers/user'
-import { Redirect } from 'react-router-dom'
-import { useState } from 'react';
+import { Redirect, Link } from 'react-router-dom'
+import { useState, useEffect } from 'react';
 import { useTransactions } from '../../providers/transactions';
 
 const Header = () => {
@@ -10,15 +10,25 @@ const Header = () => {
     const { setTransactions } = useTransactions();
     const [bar, setBar] = useState(false);
     
+    useEffect(() => {
+        
+    }, [user])
+
     const handleClick = () => {
         setBar(!bar)
     }
     const logout = () => {
         setUser(undefined)
         setTransactions(undefined)
+        localStorage.removeItem('@bycoders-desafio-dev')
     }
 
-    if(!user.profileObj){
+    const usr = localStorage.getItem('@bycoders-desafio-dev')
+    if(usr && !user)
+    {
+        setUser(JSON.parse(usr))
+    }
+    if(!user?.profileObj){
         return <Redirect to='/login' />
     }
 
@@ -29,6 +39,8 @@ const Header = () => {
                 <img src={user?.profileObj?.imageUrl} alt="profile picture" onClick={handleClick}/>
                 <nav className={`menu${ bar ? " active" : "" }`}>
                     <ul>
+                        <li><Link to='/'>Início</Link></li> 
+                        <li><Link to='/registers' >Acessar registros</Link></li> 
                         <li onClick={logout}>Logout</li>
                     </ul>
                 </nav>
