@@ -170,11 +170,11 @@ class TransactionModel:
             return {
                 'id': data[0],
                 'type': type[1],
-                'date': datetime.strftime(data[2], "%Y-%m-%d"),
+                'date': data[2].strftime("%Y-%m-%d"),
                 'value': data[3],
                 'cpf': data[4],
                 'card': data[5],
-                'time': datetime.strftime(data[2], "%H-%M-%S"),
+                'time': data[6].strftime("%H-%M-%S"),
                 'owner': owner[0][1],
                 'shop': shop[0][1],
             }
