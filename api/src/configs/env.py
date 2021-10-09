@@ -14,3 +14,4 @@ config = {
 def init_app(app: Flask):
 
     app.config['FLASK_ENV'] = environ.get('FLASK_ENV')
+    app.config['JSON_SORT_KEYS'] = False
