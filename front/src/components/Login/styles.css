@@ -1,0 +1,33 @@
+.login-container button{
+    border-radius:  7px !important;
+    border: 1px solid #61dafb !important;
+    transition: .3s;
+    background: none !important;
+    color: #61dafb !important;
+    font-size: 1rem !important;
+}
+
+.login-container button:hover{
+    transform: scale(1.05);
+    transition: .3s;
+}
+
+.login-container button div{
+    border-radius: 7px 0 0 7px !important;
+    background: none !important;
+}
+
+.login-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+.login-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
