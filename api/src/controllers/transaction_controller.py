@@ -46,7 +46,6 @@ class TransactionController:
     def post(cls):
         
         file = request.files
-        print(request)
         if len(file) == 0:
             return jsonify({'msg': 'You need to upload a file'}), 400
         try:
@@ -61,3 +60,29 @@ class TransactionController:
             return jsonify(e.msg), e.status
         except (UnicodeDecodeError) as e:
             return jsonify({'msg': 'Invalid file'}), 400
+
+    @staticmethod
+    def normalize(transaction):
+        return {
+            'id': transaction[0],
+            'type': transaction[1],
+            'date': transaction[2].strftime("%Y-%m-%d"),
+            'value': transaction[3],
+            'cpf': transaction[4],
+            'card': transaction[5],
+            'hour': transaction[6].strftime("%H-%M-%S"),
+            'owner': transaction[7],
+            'shop': transaction[8]
+        }
+    @classmethod
+    def get(cls):
+        #perpage e pagenumber
+        per_page = request.args.get('perpage')
+        page_number = request.args.get('pagenumber')
+
+       
+        if (not per_page) or (not page_number):
+            return jsonify({'msg': 'Invalid query parameters'}), 400
+        
+        transactions = TransactionModel.get_transactions(int(per_page), int(page_number))
+        return jsonify([cls.normalize(t) for t in transactions]), 200

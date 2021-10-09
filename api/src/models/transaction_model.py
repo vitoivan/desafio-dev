@@ -179,3 +179,28 @@ class TransactionModel:
                 'shop': shop[0][1],
             }
         return []
+
+    @staticmethod
+    def get_transactions(per_page: int, page_number: int):
+
+        db = Database()
+        offset = per_page * (page_number - 1)
+        query = sql.SQL("""
+            SELECT 
+                tr.id, t.nome, tr.data, tr.valor, tr.cpf, tr.cartao, tr.hora, d.nome, l.nome 
+            FROM 
+                transacoes tr 
+            JOIN tipos t 
+                ON t.id = tr.tipo_id 
+            JOIN donos d 
+                ON d.id = tr.id_dono
+            JOIN lojas l 
+                ON l.id = tr.id_loja 
+            LIMIT {per} OFFSET {off};
+        """).format(
+            per=sql.Literal(per_page),
+            off=sql.Literal(offset))
+        db.cur.execute(query)
+        data = db.cur.fetchall()
+        db.close()
+        return data

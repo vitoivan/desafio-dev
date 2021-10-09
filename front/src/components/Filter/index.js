@@ -1,16 +1,19 @@
 import './styles.css'
 import api from '../../services/api'
+import { useTransactions } from '../../providers/transactions'
 
 const Filter = ({perPage, setPerPage, pageNumber, setPageNumber}) => {
+
+    const { setTransactions } = useTransactions()
 
     const filter = (e) => {
         e.preventDefault()
         
         const perpage = `perpage=${perPage}`;
         const pagenumb = `pagenumber=${pageNumber}`;
-        api.get(`/transactions?${perpage}&${pagenumb}`)
-        .then( data => console.log(data))
-        .catch( error => console.log(error));
+        api.get(`/transaction?${perpage}&${pagenumb}`)
+        .then( data => setTransactions(data.data))
+        .catch( error => console.log('error'));
     }
     return (
         <>
