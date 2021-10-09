@@ -1,4 +1,4 @@
-from flask import request, jsonify, current_app
+from flask import request
 from src.models.errors import  InvalidCNABFile
 from src.models.transaction_model import TransactionModel
 import re
@@ -54,7 +54,7 @@ class TransactionController:
             cls.check_file(binary_file)
             rows = cls.split_file_to_rows(binary_file)
             return TransactionModel.register(rows)
-
+        
         except (InvalidCNABFile) as e:
             return e.msg, e.status
         except (UnicodeDecodeError) as e:
