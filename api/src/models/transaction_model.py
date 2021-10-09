@@ -41,7 +41,7 @@ class TransactionModel:
             cls.register_shop(str(data['shop_name']))
             output.append(cls.register_transaction(data))
         
-        return jsonify(output), 201
+        return output
     
     @staticmethod
     def register_owner(owner_name):

@@ -1,4 +1,5 @@
 from flask import request
+from flask.json import jsonify
 from src.models.errors import  InvalidCNABFile
 from src.models.transaction_model import TransactionModel
 import re
@@ -45,17 +46,18 @@ class TransactionController:
     def post(cls):
         
         file = request.files
+        print(request)
         if len(file) == 0:
-            return {'msg': 'You need to upload a file'}, 400
+            return jsonify({'msg': 'You need to upload a file'}), 400
         try:
             binary_file = cls.get_file_data(file)
             if not binary_file:
-                return {'msg': 'Invalid file'}, 400
+                return jsonify({'msg': 'Invalid file'}), 400
             cls.check_file(binary_file)
             rows = cls.split_file_to_rows(binary_file)
-            return TransactionModel.register(rows)
+            return jsonify(TransactionModel.register(rows)), 201
         
         except (InvalidCNABFile) as e:
-            return e.msg, e.status
+            return jsonify(e.msg), e.status
         except (UnicodeDecodeError) as e:
-            return {'msg': 'Invalid file'}, 400
+            return jsonify({'msg': 'Invalid file'}), 400
