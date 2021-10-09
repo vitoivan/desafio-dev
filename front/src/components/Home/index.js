@@ -68,7 +68,7 @@ const Home = () => {
                     file && (<p className='file'>Arquivo: <span>{file.name}</span></p>)
                 }
                 <input id='file' type="file" onChange={e => setFile(e.target.files[0])} name="upload_file" />
-                { loading == true ? (<Loading />) : (<button type="submit">Enviar</button>)}
+                { loading === true ? (<Loading />) : (<button type="submit">Enviar</button>)}
             </form>
             { transactions && (<Transactions />) }
         </div>
