@@ -40,7 +40,7 @@ class TransactionModel:
             cls.register_owner(str(data['owner_name']))
             cls.register_shop(str(data['shop_name']))
             output.append(cls.register_transaction(data))
-        
+            
         return output
     
     @staticmethod

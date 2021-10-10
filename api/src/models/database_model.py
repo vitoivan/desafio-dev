@@ -9,12 +9,20 @@ class Database:
         user = config['DB_USER']
         pwd =  config['DB_PWD']
 
-        self.conn = psycopg2.connect(
-            host=host,
-            database=name,
-            user=user,
-            password=pwd
-        )
+        try:
+            self.conn = psycopg2.connect(
+                host=host,
+                database=name,
+                user=user,
+                password=pwd
+            )
+        except psycopg2.OperationalError as e:
+            self.conn = psycopg2.connect(
+                host='localhost',
+                database=name,
+                user=user,
+                password=pwd
+            )
         self.cur = self.conn.cursor()
 
     def close(self):

@@ -1,6 +1,6 @@
 REGISTER = register_cnab.py
 
-all: setup test
+all: setup
 
 setup:
 	@echo "\n... Starting the virtual environment\n"

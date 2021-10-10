@@ -60,16 +60,15 @@ def test_check_file_valid_case():
     assert TransactionController.check_file(file) == None
 
 
-def test_when_send_a_valid_cnab_file():
+def test_when_send_a_valid_cnab_file(app):
 
     """ If everything is ok, then insert the files in filesbase and return it """
 
     correct_cnab = get_file('CNAB.txt')
 
-    resp = requests.post(f'{url}/register',
-        files={'file': correct_cnab }
-    )
-    assert resp.status_code == 201
+    with app.app_context():
+        resp, status = get_resp_data(TransactionController.post({'file': correct_cnab}))
+        assert status == 201
 
 
 def test_get_file_data():
