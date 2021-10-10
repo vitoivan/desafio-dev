@@ -78,11 +78,17 @@ class TransactionController:
     @classmethod
     def get(cls, per_page=None, page_number=None):
         
-        if per_page == None or page_number == None:
+        if not per_page or not page_number:
             per_page = request.args.get('perpage')
             page_number = request.args.get('pagenumber')
-
-        if (type(per_page) != int) or (type(page_number) != int):
+        
+        if not per_page or not page_number:
+            return jsonify({'msg': 'Invalid query parameters'}), 400
+        try:
+            print(per_page, page_number)
+            per_page = int(per_page)
+            page_number = int(page_number)
+        except ValueError:
             return jsonify({'msg': 'Invalid query parameters'}), 400
 
         if (not per_page) or (not page_number):
