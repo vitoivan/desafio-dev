@@ -7,6 +7,10 @@ import json
 # absolute path of this file
 here = path.dirname(__file__)
 host = 'localhost'
+port = 3000
+
+url = f'http://{host}:{port}/api/cnab'
+
 def get_file(filename):
     return open(path.join(here, f'files/{filename}'), 'rb')
 
@@ -15,7 +19,7 @@ def test_when_transaction_post_is_empty():
     
     """If the request was did without an file, then return an error"""
 
-    resp = requests.post(f'http://{host}:3000/transaction', 
+    resp = requests.post(f'{url}/register', 
         files={}
     )
     assert resp.status_code == 400
@@ -28,7 +32,7 @@ def test_when_the_type_of_file_is_not_txt():
     """ If the request was did with a file that is not a .txt,
         then return an error
     """
-    resp = requests.post(f'http://{host}:3000/transaction', 
+    resp = requests.post(f'{url}/register', 
         files={'file': wrong }
     )
     assert resp.status_code == 400
@@ -42,7 +46,7 @@ def test_when_file_is_not_an_CNAB_file():
     """
 
     invalid_cnab = get_file('invalid_CNAB.txt')
-    resp = requests.post(f'http://{host}:3000/transaction',
+    resp = requests.post(f'{url}/register',
         files={'file': invalid_cnab }
     )
     assert resp.status_code == 400
@@ -64,7 +68,7 @@ def test_when_send_a_valid_cnab_file():
 
     correct_cnab = get_file('CNAB.txt')
 
-    resp = requests.post(f'http://{host}:3000/transaction',
+    resp = requests.post(f'{url}/register',
         files={'file': correct_cnab }
     )
 
