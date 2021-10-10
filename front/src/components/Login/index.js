@@ -38,7 +38,7 @@ const Login = () => {
             {
                 loading === true ? (<Loading />):
                 (<GoogleLogin
-                    clientId="870034952037-38mq1nvbdbckdfe30d9keg5r7jtd945f.apps.googleusercontent.com"
+                    clientId="520853830401-gp7q9qvs907hhv7n0r9tfrqgookf6oi3.apps.googleusercontent.com"
                     buttonText="Continuar com o Google"
                     onSuccess={success}
                     onFailure={error}
