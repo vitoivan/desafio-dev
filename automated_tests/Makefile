@@ -2,7 +2,7 @@ REGISTER = register_cnab.py
 
 all: setup
 
-setup: clear
+setup: clean
 	@echo "\n... Starting the virtual environment\n"
 	@./setup_venv.sh
 	@echo "\n... Done!\n"
