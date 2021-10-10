@@ -43,9 +43,10 @@ class TransactionController:
              
     
     @classmethod
-    def post(cls):
+    def post(cls, file = None):
         
-        file = request.files
+        if file == None:
+            file = request.files
         if len(file) == 0:
             return jsonify({'msg': 'You need to upload a file'}), 400
         try:
@@ -75,14 +76,19 @@ class TransactionController:
             'shop': transaction[8]
         }
     @classmethod
-    def get(cls):
-        #perpage e pagenumber
-        per_page = request.args.get('perpage')
-        page_number = request.args.get('pagenumber')
+    def get(cls, per_page=None, page_number=None):
+        
+        if per_page == None or page_number == None:
+            per_page = request.args.get('perpage')
+            page_number = request.args.get('pagenumber')
 
-       
+        if (type(per_page) != int) or (type(page_number) != int):
+            return jsonify({'msg': 'Invalid query parameters'}), 400
+
         if (not per_page) or (not page_number):
             return jsonify({'msg': 'Invalid query parameters'}), 400
-        
+        elif (per_page < 1) or (page_number < 1):
+            return jsonify({'msg': 'Invalid query parameters'}), 400
+
         transactions = TransactionModel.get_transactions(int(per_page), int(page_number))
         return jsonify([cls.normalize(t) for t in transactions]), 200

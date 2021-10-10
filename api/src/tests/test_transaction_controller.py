@@ -3,7 +3,6 @@ from os import path
 import pytest
 import requests
 import json
-
 # absolute path of this file
 here = path.dirname(__file__)
 host = 'localhost'
@@ -14,43 +13,42 @@ url = f'http://{host}:{port}/api/cnab'
 def get_file(filename):
     return open(path.join(here, f'files/{filename}'), 'rb')
 
-
-def test_when_transaction_post_is_empty():
+def get_resp_data(data):
+    resp, status = data
+    return [json.loads(resp.__dict__['response'][0]), status]
+    
+def test_when_transaction_post_is_empty(app):
     
     """If the request was did without an file, then return an error"""
 
-    resp = requests.post(f'{url}/register', 
-        files={}
-    )
-    assert resp.status_code == 400
-    assert json.loads(resp.text) == {'msg': 'You need to upload a file'}
+    with app.app_context():
+        resp, status = get_resp_data(TransactionController.post())
+        assert status == 400
+        assert resp == {'msg': 'You need to upload a file'}
 
 
-def test_when_the_type_of_file_is_not_txt():
+def test_when_the_type_of_file_is_not_txt(app):
 
     wrong = get_file('incorrect')
     """ If the request was did with a file that is not a .txt,
         then return an error
     """
-    resp = requests.post(f'{url}/register', 
-        files={'file': wrong }
-    )
-    assert resp.status_code == 400
-    assert json.loads(resp.text) == {'msg': 'Invalid file'}
+    with app.app_context():
+        resp, status = get_resp_data(TransactionController.post({'file': wrong}))
+        assert status == 400
+        assert resp == {'msg': 'Invalid file'}
 
 
-def test_when_file_is_not_an_CNAB_file():
+def test_when_file_is_not_an_CNAB_file(app):
 
     """ If the request was did with a file that was not a CNAB file,
         but is a .txt, needs to return an error
     """
-
     invalid_cnab = get_file('invalid_CNAB.txt')
-    resp = requests.post(f'{url}/register',
-        files={'file': invalid_cnab }
-    )
-    assert resp.status_code == 400
-    assert json.loads(resp.text) == {'msg': 'Your file is not a valid CNAB file'}
+    with app.app_context():
+        resp, status = get_resp_data(TransactionController.post({'file': invalid_cnab}))
+        assert status == 400
+        assert resp == {'msg': 'Your file is not a valid CNAB file'}
 
 
 def test_check_file_valid_case():
@@ -71,7 +69,6 @@ def test_when_send_a_valid_cnab_file():
     resp = requests.post(f'{url}/register',
         files={'file': correct_cnab }
     )
-
     assert resp.status_code == 201
 
 
@@ -104,3 +101,28 @@ def test_check_file():
     array_len = len(TransactionController.split_file_to_rows(file_decoded))
     expected = 21
     assert expected == array_len
+
+
+def test_when_send_invalid_query_parameters_on_get(app):
+    
+    """
+        If passed a invalid parameter on query string
+        (like NaN, negative numbers or None) then return an error message
+    """
+    error_msg = {'msg': 'Invalid query parameters'}
+    exp_status = 400
+    perpage = -1
+    pagenumber = 2
+
+    with app.app_context():
+        resp, status = get_resp_data(TransactionController.get(perpage, pagenumber))
+        assert resp == error_msg
+        assert status == exp_status
+        perpage = 'Testing'
+        pagenumber = 1
+        resp, status = get_resp_data(TransactionController.get(perpage, pagenumber))
+        assert resp == error_msg
+        assert status == exp_status
+        resp, status = get_resp_data(TransactionController.get())
+        assert resp == error_msg
+        assert status == exp_status
