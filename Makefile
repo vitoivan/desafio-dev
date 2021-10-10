@@ -1,6 +1,6 @@
 all: disable-postgres start
 
-start: setup-front start-servers
+start: setup-back setup-front start-servers
 
 stop: stop-docker active-postgres
 
@@ -24,10 +24,15 @@ start-front:
 	@echo "\n------------ Done!\n"
 
 setup-front:
-	@echo "\n-------------- Installing dependencies\n"
+	@echo "\n-------------- Installing front dependencies\n"
 	@yarn --silent --cwd ./front
 	@echo "\n------------ Done!\n"
 
+
+setup-back:
+	@echo "\n-------------- Installing api dependencies\n"
+	@./setup_venv.sh
+	@echo "\n------------ Done!\n"
 
 active-postgres:
 	@echo "\n-------------- Starting your postgres process on port 5432 \n"
