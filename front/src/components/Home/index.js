@@ -25,7 +25,7 @@ const Home = () => {
             headers: {"Content-Type": `multipart/form-data`}
         }
 
-        api.post('/transaction', formData, config)
+        api.post('/register', formData, config)
         .then(data => {
             setLoading(false)
             setTransactions(data.data)

@@ -11,7 +11,7 @@ const Filter = ({perPage, setPerPage, pageNumber, setPageNumber}) => {
         
         const perpage = `perpage=${perPage}`;
         const pagenumb = `pagenumber=${pageNumber}`;
-        api.get(`/transaction?${perpage}&${pagenumb}`)
+        api.get(`/?${perpage}&${pagenumb}`)
         .then( data => setTransactions(data.data))
         .catch( error => console.log('error'));
     }

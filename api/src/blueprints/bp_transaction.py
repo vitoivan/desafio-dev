@@ -2,10 +2,10 @@ from flask import Blueprint
 from werkzeug.wrappers import request
 from src.controllers.transaction_controller import TransactionController
 
-transaction_bp = Blueprint('bp_transation', __name__)
+transaction_bp = Blueprint('bp_transation', __name__, url_prefix='/api/cnab')
 
 
-@transaction_bp.route('/transaction', methods=['POST', 'OPTIONS'])
+@transaction_bp.route('/register', methods=['POST', 'OPTIONS'])
 def post():
     
     response, status = TransactionController.post()
@@ -15,7 +15,7 @@ def post():
     return response
 
 
-@transaction_bp.get('/transaction')
+@transaction_bp.get('/')
 def get():
 
     response, status = TransactionController.get()
