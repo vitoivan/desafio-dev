@@ -35,7 +35,8 @@ const Header = () => {
     return (
         <header className='header-container'>
             <h1>Olá, {user?.profileObj?.givenName}!</h1>
-            <div className="header-menu-img">
+                <div className="header-menu-img">
+                <div className="arrow"></div>
                 <img src={user?.profileObj?.imageUrl} alt="profile" onClick={handleClick}/>
                 <nav className={`menu${ bar ? " active" : "" }`}>
                     <ul>
