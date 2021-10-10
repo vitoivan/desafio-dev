@@ -1,4 +1,6 @@
-all: disable-postgres setup-front start-servers
+all: disable-postgres start
+
+start: setup-front start-servers
 
 stop: stop-docker active-postgres
 
@@ -27,7 +29,6 @@ setup-front:
 	@echo "\n------------ Done!\n"
 
 
-
 active-postgres:
 	@echo "\n-------------- Starting your postgres process on port 5432 \n"
 	@/etc/init.d/postgresql start
@@ -39,3 +40,5 @@ disable-postgres:
 	@/etc/init.d/postgresql stop
 	@echo "\n------------ Done!\n"
 
+
+.PHONY: start-docker stop-docker start-front setup-front active-postgres disable-postgres
