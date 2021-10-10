@@ -46,4 +46,4 @@ disable-postgres:
 	@echo "\n------------ Done!\n"
 
 
-.PHONY: start-docker stop-docker start-front setup-front active-postgres disable-postgres
+.PHONY: start-docker stop-docker start-front setup-front setup-back active-postgres disable-postgres
